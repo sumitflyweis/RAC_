@@ -1,83 +1,125 @@
 const mongoose = require("mongoose");
-const schema = mongoose.Schema;
-var userSchema = new schema(
-    {
-        fullName: {
-            type: String,
-        },
-        firstName: {
-            type: String,
-        },
-        lastName: {
-            type: String,
-        },
-        language: {
-            type: String,
-        },
-        image: {
-            type: String,
-        },
-        gender: {
-            type: String,
-        },
-        phone: {
-            type: String,
-        },
-        email: {
-            type: String,
-            minLength: 10,
-        },
-        password: {
-            type: String,
-        },
-        city: {
-            type: String,
-        },
-        country: {
-            type: String,
-        },
-        state: {
-            type: String,
-        },
-        district: {
-            type: String,
-        },
-        pincode: {
-            type: Number,
-        },
-        otp: {
-            type: String,
-        },
-        otpExpiration: {
-            type: Date,
-        },
-        accountVerification: {
-            type: Boolean,
-            default: false,
-        },
-        userType: {
-            type: String,
-            enum: ["USER", "VENDOR", "ADMIN"],
-        },
-        status: {
-            type: String,
-            enum: ["Approved", "Reject", "Pending"],
-        },
-        currentLocation: {
-            type: {
-                type: String,
-                default: "Point"
-            },
-            coordinates: {
-                type: [Number],
-                default: [0, 0]
-            },
-        },
-        wallet: {
-            type: Number,
-            default: 0,
-        },
+const objectId = mongoose.Types.ObjectId;
+var userSchema = mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      default:""
     },
-    { timestamps: true }
-);
+    firstName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+    },
+    language: {
+      type: String,
+    },
+    image: {
+      type: String,
+    },
+    gender: {
+      type: String,
+    },
+    phone: {
+      type: String,
+      default:""
+    },
+    email: {
+      type: String,
+      //minLength: 10,
+      default:""
+    },
+    password: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    district: {
+      type: String,
+    },
+    pincode: {
+      type: Number,
+    },
+    address:{
+      type:String,
+      default:""
+    },
+    otp: {
+      type: String,
+    },
+    otpExpiration: {
+      type: Date,
+    },
+    accountVerification: {
+      type: Boolean,
+      default: false,
+    },
+    userType: {
+      type: String,
+      enum: ["USER", "VENDOR", "ADMIN"],
+    },
+    status: {
+      type: String,
+      enum: ["Approved", "Reject", "Pending"],
+    },
+    currentLocation: {
+      type: {
+        type: String,
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+        default: [0, 0],
+      },
+    },
+    wallet: {
+      type: Number,
+      default: 0,
+    },
+    serviceArea: {
+      type: objectId,
+      ref: "seviceArea",
+    },
+    serviceDistance: {
+      type: objectId,
+      ref: "seviceDist",
+    },
+    serviceName: {
+      type: objectId,
+      ref: "seviceName",
+    },
+    ///////////////////////////////////////////////
+    uploadSelfie:{
+        type:String,
+    },
+    pancard:{
+        type:String,
+    },
+    uploadPanCard:{
+        type:String,
+    },
+    aadharCard:{
+        type:String
+    },
+    frontSide:{
+        type:String
+    },
+    backSide:{
+        type:String
+    },
+    document:{
+      type:String
+    }
+    //////////////////////////////////////////
+  },
+  { timestamps: true }
+)
 module.exports = mongoose.model("user", userSchema);

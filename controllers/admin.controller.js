@@ -25,6 +25,7 @@ exports.registration = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
 exports.signin = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -47,6 +48,7 @@ exports.signin = async (req, res) => {
         res.status(500).send({ message: "Server error" + error.message });
     }
 };
+
 exports.update = async (req, res) => {
     try {
         const { fullName, firstName, lastName, email, phone, password } = req.body;

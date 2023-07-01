@@ -17,10 +17,17 @@ if (process.env.NODE_ENV == "production") {
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
-const user = require('./routes/user.route');
-const admin = require('./routes/admin.route');
-app.use('/api/v1/user', user);
-app.use('/api/v1/admin', admin);
+
+app.use('/api/v1/user', require('./routes/user.route'));
+app.use('/api/v1/vendor', require('./routes/vendor.routes'));
+app.use('/api/v1/admin', require('./routes/admin.route'));
+app.use("/api/v1/images", require("./routes/banner"));
+app.use("/api/v1/serviceArea",require("./routes/serviceArea"))
+app.use("/api/v1/serviceableDist",require("./routes/serviceableDistance"))
+app.use("/api/v1/service",require("./routes/service"))
+app.use("/api/v1/noti",require("./routes/notifcation"))
+app.use("/api/v1/city",require("./routes/selectcity"))
+app.use("/api/v1/wallett",require("./routes/wallet"))
 
 mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", true);

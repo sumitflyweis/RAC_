@@ -3,12 +3,11 @@ const jwt = require("jsonwebtoken");
 const authConfig = require("../configs/auth.config");
 var newOTP = require("otp-generators");
 const User = require("../models/user.model");
-const Wallet = require("../models/wallet")
 
-exports.registration = async (req, res) => {
+exports.registrationVendor = async (req, res) => {
   try {
     const { phone } = req.body;
-    const user = await User.findOne({ phone: phone, userType: "USER" });
+    const user = await User.findOne({ phone: phone, userType: "VENDOR" });
     if (!user) {
       req.body.otp = newOTP.generate(4, {
         alphabets: false,
@@ -17,29 +16,28 @@ exports.registration = async (req, res) => {
       });
       req.body.otpExpiration = new Date(Date.now() + 5 * 60 * 1000);
       req.body.accountVerification = false;
-      req.body.userType = "USER";
+      req.body.userType = "VENDOR";
       const userCreate = await User.create(req.body);
       let obj = {
         id: userCreate._id,
         otp: userCreate.otp,
+        fullName: userCreate.fullName,
         phone: userCreate.phone,
+        email: userCreate.email,
+        pincode: userCreate.pincode,
+        serviceArea: userCreate.serviceArea,
+        serviceDistance: userCreate.serviceDistance,
+        serviceName: userCreate.serviceName,
+        //   uploadSelfie
+        // pancard:
+        // uploadPanCard:
+        // aadharCard:
+        // frontSide:
+        // backSide:
       };
-
-      console.log(userCreate);
-      console.log(userCreate._id.toString());
-      const createWallet = await Wallet.create({
-        user: userCreate._id.toString(),
-      });
-      console.log(createWallet);
-
       res
         .status(200)
-        .send({
-          status: 200,
-          message: "Registered successfully ",
-          data: obj,
-          wallet: createWallet,
-        });
+        .send({ status: 200, message: "Registered successfully ", data: obj });
     } else {
       return res.status(409).send({ status: 409, msg: "Already Exit" });
     }
@@ -49,10 +47,10 @@ exports.registration = async (req, res) => {
   }
 };
 
-exports.loginWithPhone = async (req, res) => {
+exports.loginWithPhoneVendor = async (req, res) => {
   try {
     const { phone } = req.body;
-    const user = await User.findOne({ phone: phone, userType: "USER" });
+    const user = await User.findOne({ phone: phone, userType: "VENDOR" });
     if (!user) {
       return res.status(400).send({ msg: "not found" });
     }
@@ -65,7 +63,7 @@ exports.loginWithPhone = async (req, res) => {
     userObj.otpExpiration = new Date(Date.now() + 5 * 60 * 1000);
     userObj.accountVerification = false;
     const updated = await User.findOneAndUpdate(
-      { phone: phone, userType: "USER" },
+      { phone: phone, userType: "VENDOR" },
       userObj,
       { new: true }
     );
@@ -73,6 +71,8 @@ exports.loginWithPhone = async (req, res) => {
       id: updated._id,
       otp: updated.otp,
       phone: updated.phone,
+      fullName: updated.fullName,
+      email: updated.email,
     };
     res
       .status(200)
@@ -83,7 +83,7 @@ exports.loginWithPhone = async (req, res) => {
   }
 };
 
-exports.verifyOtp = async (req, res) => {
+exports.verifyOtpVendor = async (req, res) => {
   try {
     const { otp } = req.body;
     const user = await User.findById(req.params.id);
@@ -116,7 +116,7 @@ exports.verifyOtp = async (req, res) => {
   }
 };
 
-exports.getProfile = async (req, res) => {
+exports.getProfileVendor = async (req, res) => {
   try {
     const data = await User.findOne({ _id: req.user.id });
     if (data) {
@@ -134,10 +134,10 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-exports.resendOTP = async (req, res) => {
+exports.resendOTPVendor = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findOne({ _id: id, userType: "USER" });
+    const user = await User.findOne({ _id: id, userType: "VENDOR" });
     if (!user) {
       return res.status(404).send({ status: 404, message: "User not found" });
     }
@@ -167,7 +167,7 @@ exports.resendOTP = async (req, res) => {
   }
 };
 
-exports.updateLocation = async (req, res) => {
+exports.updateLocationVendor = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.user.id });
     if (!user) {
@@ -185,7 +185,6 @@ exports.updateLocation = async (req, res) => {
         {
           $set: {
             currentLocation: req.body.currentLocation,
-            city: req.body.city,
           },
         },
         { new: true }
@@ -206,25 +205,52 @@ exports.updateLocation = async (req, res) => {
   }
 };
 
-exports.editProfile = async (req, res) => {
+exports.deleteUserById = async (req, res) => {
   try {
-    const findUser = await User.findById({ _id: req.user._id });
+    const findUser = await User.findById({ _id: req.params.id });
     if (findUser) {
-      const data = {
-        fullName: req.body.fullName || findUser.fullName,
-        email: req.body.email || findUser.email,
-        phone: req.body.phone || findUser.phone,
-        address: req.body.address || findUser.address,
-      };
-      const user = await User.findByIdAndUpdate({ _id: req.user._id }, data, {
-        new: true,
-      });
-      return res
-        .status(200)
-        .json({ msg: "profile details updated", user: user });
+      await User.deleteOne({ _id: findUser._id });
+      return res.status(200).send({ message: "data deleted " });
     } else {
       return res.status(404).json({ msg: "user not found", user: {} });
     }
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send({ message: err.message });
+  }
+};
+
+exports.updateFileAndDocumentVendor = async (req, res) => {
+  try {
+    // console.log("hi")
+    let front = req.files["frontImage"];
+    let back = req.files["backImage"];
+    let pic = req.files["pic"];
+    let panCard = req.files["panCard"];
+    req.body.frontSide = front[0].path;
+    req.body.backSide = back[0].path;
+    req.body.uploadSelfie = pic[0].path;
+    req.body.uploadPanCard = panCard[0].path;
+
+
+    const user = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          frontSide: req.body.frontSide,
+          backSide: req.body.backSide,
+          uploadSelfie: req.body.uploadSelfie,
+          uploadPanCard: req.body.uploadPanCard,
+          pancard: req.body.pancardNumber,
+          aadharCard: req.body.aadharCardNumber,
+          document: req.body.document,
+        },
+      },
+      { new: true }
+    );
+    return res
+      .status(200)
+      .json({ msg: "profile updated successfully", user: user });
   } catch (error) {
     console.error(error);
     res
