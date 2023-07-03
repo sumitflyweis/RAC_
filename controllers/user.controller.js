@@ -3,12 +3,13 @@ const jwt = require("jsonwebtoken");
 const authConfig = require("../configs/auth.config");
 var newOTP = require("otp-generators");
 const User = require("../models/user.model");
-const Wallet = require("../models/wallet")
+const Wallet = require("../models/wallet");
 
 exports.registration = async (req, res) => {
   try {
-    const { phone } = req.body;
-    const user = await User.findOne({ phone: phone, userType: "USER" });
+    var { phone, referalCode,referalCodeUnique } = req.body;
+    var user = await User.findOne({ phone: phone, userType: "USER" });
+
     if (!user) {
       req.body.otp = newOTP.generate(4, {
         alphabets: false,
@@ -18,7 +19,28 @@ exports.registration = async (req, res) => {
       req.body.otpExpiration = new Date(Date.now() + 5 * 60 * 1000);
       req.body.accountVerification = false;
       req.body.userType = "USER";
-      const userCreate = await User.create(req.body);
+
+
+      let referalUser = null;
+
+      const userCreate = await User.create({
+        phone,
+        referalCodeUnique,
+        ...req.body
+        });
+
+      if (referalCode) {
+        referalUser = await User.findOne({ referalCode: referalCode });
+        if (referalUser) {
+          referalUser.referalData.push(userCreate._id);
+          referalUser.referalCoin += 200;
+          await referalUser.save();
+        }
+      }
+
+      userCreate.referalBy = referalUser ? referalUser._id : null
+        await userCreate.save();
+
       let obj = {
         id: userCreate._id,
         otp: userCreate.otp,
@@ -32,14 +54,12 @@ exports.registration = async (req, res) => {
       });
       console.log(createWallet);
 
-      res
-        .status(200)
-        .send({
-          status: 200,
-          message: "Registered successfully ",
-          data: obj,
-          wallet: createWallet,
-        });
+      res.status(200).send({
+        status: 200,
+        message: "Registered successfully ",
+        data: obj,
+        wallet: createWallet,
+      });
     } else {
       return res.status(409).send({ status: 409, msg: "Already Exit" });
     }

@@ -7,5 +7,10 @@ walletRouter.post(
   "/addandremoveMoney/:user",
   walletContrallers.addandremoveMoney
 );
+walletRouter.post(
+  "/addandremoveLead/:user",
+  walletContrallers.addandremoveLead
+);
+
 
 module.exports = walletRouter;

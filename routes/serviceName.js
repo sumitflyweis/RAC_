@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const seviceNameController = require('../controllers/service');
+const seviceNameController = require('../controllers/serviceName');
 
 router.post('/', seviceNameController.createSeviceArea);
 

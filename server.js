@@ -24,10 +24,13 @@ app.use('/api/v1/admin', require('./routes/admin.route'));
 app.use("/api/v1/images", require("./routes/banner"));
 app.use("/api/v1/serviceArea",require("./routes/serviceArea"))
 app.use("/api/v1/serviceableDist",require("./routes/serviceableDistance"))
-app.use("/api/v1/service",require("./routes/service"))
+app.use("/api/v1/service",require("./routes/serviceName"))
 app.use("/api/v1/noti",require("./routes/notifcation"))
 app.use("/api/v1/city",require("./routes/selectcity"))
 app.use("/api/v1/wallett",require("./routes/wallet"))
+app.use("/api/v1/terms",require("./routes/termsAndCondition"))
+app.use("/api/v1/subscriptionn",require("./routes/subscription"))
+app.use("/api/v1/subsubcategoryy",require("./routes/subsubcategory"))
 
 mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", true);

@@ -4,7 +4,7 @@ var userSchema = mongoose.Schema(
   {
     fullName: {
       type: String,
-      default:""
+      default: "",
     },
     firstName: {
       type: String,
@@ -23,12 +23,12 @@ var userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
-      default:""
+      default: "",
     },
     email: {
       type: String,
       //minLength: 10,
-      default:""
+      default: "",
     },
     password: {
       type: String,
@@ -48,9 +48,9 @@ var userSchema = mongoose.Schema(
     pincode: {
       type: Number,
     },
-    address:{
-      type:String,
-      default:""
+    address: {
+      type: String,
+      default: "",
     },
     otp: {
       type: String,
@@ -84,6 +84,10 @@ var userSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    lead:{
+      type:Number,
+      default:0
+    },
     serviceArea: {
       type: objectId,
       ref: "seviceArea",
@@ -97,29 +101,59 @@ var userSchema = mongoose.Schema(
       ref: "seviceName",
     },
     ///////////////////////////////////////////////
-    uploadSelfie:{
-        type:String,
+    uploadSelfie: {
+      type: String,
     },
-    pancard:{
-        type:String,
+    pancard: {
+      type: String,
     },
-    uploadPanCard:{
-        type:String,
+    uploadPanCard: {
+      type: String,
     },
-    aadharCard:{
-        type:String
+    aadharCard: {
+      type: String,
     },
-    frontSide:{
-        type:String
+    frontSide: {
+      type: String,
     },
-    backSide:{
-        type:String
+    backSide: {
+      type: String,
     },
-    document:{
-      type:String
-    }
+    document: {
+      type: String,
+    },
     //////////////////////////////////////////
+    referalCodeUnique:{
+      type:String,
+      default:""
+    },
+    referalCode: {
+      type: String,
+      default: "",
+    },
+    referalBy: {
+      type: objectId,
+      ref: "user",
+    },
+    referalData: [],
+    ///////////////////////////////////////////////////
+    referalCoin:{
+      type:Number,
+      default:0
+    },
+    ///////////////////////////////////////////////////
+    subscriptionId: {
+      type: objectId,
+      ref: "Subscription",
+    },
+    subscriptionExpiration: {
+      type: Date,
+    },
+    subscriptionVerification: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
-)
+);
 module.exports = mongoose.model("user", userSchema);

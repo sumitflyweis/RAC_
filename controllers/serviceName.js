@@ -1,4 +1,4 @@
-const serviceName = require('../models/service');
+const serviceName = require('../models/serviceName');
 
 
 exports.createSeviceArea = async (req, res) => {
