@@ -1,4 +1,3 @@
-const Wallet = require("../models/wallet");
 const userSchema = require("../models/user.model");
 
 

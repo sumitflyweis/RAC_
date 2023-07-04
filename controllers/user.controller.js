@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const authConfig = require("../configs/auth.config");
 var newOTP = require("otp-generators");
 const User = require("../models/user.model");
-const Wallet = require("../models/wallet");
+
 
 exports.registration = async (req, res) => {
   try {
@@ -33,7 +33,7 @@ exports.registration = async (req, res) => {
         referalUser = await User.findOne({ referalCode: referalCode });
         if (referalUser) {
           referalUser.referalData.push(userCreate._id);
-          referalUser.referalCoin += 200;
+          referalUser.Coin += 200;
           await referalUser.save();
         }
       }
@@ -47,18 +47,10 @@ exports.registration = async (req, res) => {
         phone: userCreate.phone,
       };
 
-      console.log(userCreate);
-      console.log(userCreate._id.toString());
-      const createWallet = await Wallet.create({
-        user: userCreate._id.toString(),
-      });
-      console.log(createWallet);
-
       res.status(200).send({
         status: 200,
         message: "Registered successfully ",
-        data: obj,
-        wallet: createWallet,
+        data: obj
       });
     } else {
       return res.status(409).send({ status: 409, msg: "Already Exit" });

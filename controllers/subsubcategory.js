@@ -25,18 +25,34 @@ exports.createSubsubcategory = async (req, res) => {
 
 exports.getSubsubcategoryById = async (req, res) => {
   try {
-    const subsubcategory = await Subsubcategory.findById(req.params.id);
+    const subsubcategory = await Subsubcategory.findById(req.params.id).populate("categoryId subCategoryId vendorId")
 
-    if (!subsubcategory) {
+      if (!subsubcategory) {
       return res.status(404).json({ message: "Subsubcategory not found" });
     }
 
-    res.status(200).json(subsubcategory);
+    res.status(200).json({msg:subsubcategory});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+exports.getSubsubcategory = async (req, res) => {
+  try {
+    const subsubcategory = await Subsubcategory.find().populate("categoryId subCategoryId vendorId")
+
+      if (!subsubcategory) {
+      return res.status(404).json({ message: "Subsubcategory not found" });
+    }
+
+    res.status(200).json({msg:subsubcategory});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
 
 exports.updateSubsubcategory = async (req, res) => {
   try {

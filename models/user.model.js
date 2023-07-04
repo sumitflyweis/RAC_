@@ -137,7 +137,7 @@ var userSchema = mongoose.Schema(
     },
     referalData: [],
     ///////////////////////////////////////////////////
-    referalCoin:{
+    Coin:{
       type:Number,
       default:0
     },

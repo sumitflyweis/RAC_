@@ -33,6 +33,7 @@ const verifyToken = (req, res, next) => {
         next();
     });
 };
+
 const isAdmin = (req, res, next) => {
     const token =
         req.headers["x-access-token"] ||

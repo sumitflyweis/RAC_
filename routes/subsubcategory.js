@@ -5,6 +5,8 @@ const subsubcategoryController = require("../controllers/subsubcategory");
 // Create a new subsubcategory
 router.post("/", subsubcategoryController.createSubsubcategory);
 
+router.get("/", subsubcategoryController.getSubsubcategory);
+
 // Get a subsubcategory by ID
 router.get("/:id", subsubcategoryController.getSubsubcategoryById);
 
