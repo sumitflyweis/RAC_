@@ -123,6 +123,27 @@ var userSchema = mongoose.Schema(
       type: String,
     },
     //////////////////////////////////////////
+    BankName:{
+      type:String,
+      default:""
+    },
+    BranchName:{
+      type:String,
+      default:""
+    },
+    AccountNumber:{
+      type:String,
+      default:""
+    },
+    confirmAccountNumber:{
+      type:String,
+      default:""
+    },
+    ifscCode:{
+      type:String,
+      default:""
+    },
+    //////////////////////////////////////////////
     referalCodeUnique:{
       type:String,
       default:""

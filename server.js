@@ -34,6 +34,7 @@ app.use("/api/v1/subsubcategoryy",require("./routes/subsubcategory"))
 app.use("/api/v1/offerr",require("./routes/offerRoute"))
 app.use("/api/v1/productt",require("./routes/productRoute"))
 app.use("/api/v1/coupenn",require("./routes/coupencode"))
+app.use("/api/v1/cartAndOrder",require("./routes/cart&order.route"))
 
 mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", true);

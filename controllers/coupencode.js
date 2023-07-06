@@ -137,13 +137,15 @@ exports.deleteCoupencode = async (req, res) => {
 
 exports.addUserToCoupencode = async (req, res) => {
   try {
+   
     const { coupencode } = req.params;
     const userId = req.user._id;
+    
     // console.log(req.user._id) // Assuming the user ID is available in req.user.id through authentication middleware
 
     // Find the coupencode
-    const coupencodeObj = await coupencodeModel.findOne({ coupencode:coupencode });
-
+    let coupencodeObj = await coupencodeModel.findOne({ coupencode:coupencode });
+   
     if (!coupencodeObj) {
       return res.status(404).json({ error: "Coupencode not found" });
     }
@@ -152,10 +154,10 @@ exports.addUserToCoupencode = async (req, res) => {
     if (coupencodeObj.user.includes(userId)) {
       return res.status(400).json({ error: "User already used this coupencode" });
     }
-
+    
     // Get the maximum user count
-    const maximumUserCount = coupencodeObj.maximumUser;
-
+    let maximumUserCount = coupencodeObj.maximumUser;
+    
     // Check if the maximum user count has been reached
     if (maximumUserCount > 0 && coupencodeObj.user.length >= maximumUserCount) {
       return res.status(400).json({ error: "Maximum user count reached for this coupencode" });
@@ -163,19 +165,19 @@ exports.addUserToCoupencode = async (req, res) => {
 
     // Add the user to the array
     coupencodeObj.user.push(userId);
-
-    
+   
     // Decrease the maximumUserCount by one
     maximumUserCount--;
 
     // Check if the maximumUserCount has reached zero before expireAt
+    
     if (maximumUserCount === 0 && moment().isBefore(coupencodeObj.expireAt)) {
       coupencodeObj.expiration = "true";
     }
-
+    //console.log(coupencodeObj)
     // Update the maximumUserCount in the coupencode
     coupencodeObj.maximumUser = maximumUserCount;
-
+   
     // Save the coupencode
     const updatedCoupencode = await coupencodeObj.save();
 

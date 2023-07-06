@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const seviceNameSchema = new mongoose.Schema({
-
     name: {
         type: String,
     },
