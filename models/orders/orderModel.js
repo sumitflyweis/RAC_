@@ -58,6 +58,68 @@ const DocumentSchema = schema({
       type: String
     }
   },
+
+
+  
+    vendorIdService: {
+      type: schema.Types.ObjectId,
+      ref: "user",
+    },
+    categoryId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "Category",
+    },
+    subCategoryId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "subCategory",
+    },
+    subsubCategoryId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "subsubcategory",
+    },
+    serviceId: {
+      type: schema.Types.ObjectId,
+      ref: "seviceName",
+    },
+    servicePrice: {
+      type: Number,
+    },
+    cGstService: {
+      type: Number,
+    },
+    sGstService: {
+      type: Number,
+    },
+    quantityService: {
+      type: Number,
+      default: 1,
+    },
+    totalService: {
+      type: Number,
+      default: 0,
+    },
+  paidAmountService: {
+    type: Number,
+    default: 0
+  },
+  addressService: {
+    street1: {
+      type: String,
+    },
+    street2: {
+      type: String
+    },
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    country: {
+      type: String
+    }
+  },
+
   userPhone: {
     type: String,
   },
@@ -142,6 +204,30 @@ const DocumentSchema = schema({
     type: String,
     enum: ["assigned", "out_for_delivery", "delivered", ""],
     default: ""
+  },
+  acceptOrRejected:{
+    type:String,
+    enum:["accept","reject","pending"],
+    default:"pending"
+  },
+  startTime:{
+    type:String,
+    default:""
+  },
+  endTime:{
+    type:String,
+    default:""
+  },
+  otp:{
+    type:Number,
+    default:""
+  },
+  otpExpiration: {
+    type: Date,
+  },
+  accountVerification: {
+    type: Boolean,
+    default: false,
   },
 }, { timestamps: true })
 module.exports = mongoose.model("Order", DocumentSchema);

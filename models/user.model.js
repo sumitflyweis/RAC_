@@ -2,6 +2,22 @@ const mongoose = require("mongoose");
 const objectId = mongoose.Types.ObjectId;
 var userSchema = mongoose.Schema(
   {
+    companyName: {
+      type: String,
+    },
+    customerSupportNo: {
+      type: String,
+    },
+    customerRegistrationNo: {
+      type: String,
+    },
+    GST: {
+      type: String,
+    },
+    typeOfProducts:{
+      type:Array
+    },
+    /////////////////////////////////////////
     fullName: {
       type: String,
       default: "",
@@ -84,9 +100,9 @@ var userSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    lead:{
-      type:Number,
-      default:0
+    lead: {
+      type: Number,
+      default: 0,
     },
     serviceArea: {
       type: objectId,
@@ -123,30 +139,30 @@ var userSchema = mongoose.Schema(
       type: String,
     },
     //////////////////////////////////////////
-    BankName:{
-      type:String,
-      default:""
+    BankName: {
+      type: String,
+      default: "",
     },
-    BranchName:{
-      type:String,
-      default:""
+    BranchName: {
+      type: String,
+      default: "",
     },
-    AccountNumber:{
-      type:String,
-      default:""
+    AccountNumber: {
+      type: String,
+      default: "",
     },
-    confirmAccountNumber:{
-      type:String,
-      default:""
+    confirmAccountNumber: {
+      type: String,
+      default: "",
     },
-    ifscCode:{
-      type:String,
-      default:""
+    ifscCode: {
+      type: String,
+      default: "",
     },
     //////////////////////////////////////////////
-    referalCodeUnique:{
-      type:String,
-      default:""
+    referalCodeUnique: {
+      type: String,
+      default: "",
     },
     referalCode: {
       type: String,
@@ -158,9 +174,9 @@ var userSchema = mongoose.Schema(
     },
     referalData: [],
     ///////////////////////////////////////////////////
-    Coin:{
-      type:Number,
-      default:0
+    Coin: {
+      type: Number,
+      default: 0,
     },
     ///////////////////////////////////////////////////
     subscriptionId: {
@@ -174,6 +190,7 @@ var userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+   
   },
   { timestamps: true }
 );

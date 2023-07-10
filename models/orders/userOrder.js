@@ -54,5 +54,9 @@ const DocumentSchema = schema({
     enum: ["pending", "paid", "failed"],
     default: "pending"
   },
+  acceptOrRejected:{
+    type:String,
+    default:""
+  }
 }, { timestamps: true })
 module.exports = mongoose.model("userOrder", DocumentSchema);

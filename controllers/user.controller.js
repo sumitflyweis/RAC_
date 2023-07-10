@@ -130,7 +130,7 @@ exports.verifyOtp = async (req, res) => {
 
 exports.getProfile = async (req, res) => {
   try {
-    const data = await User.findOne({ _id: req.user.id });
+    const data = await User.findOne({ _id: req.user._id });
     if (data) {
       return res
         .status(200)

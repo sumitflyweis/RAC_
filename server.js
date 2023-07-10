@@ -35,6 +35,7 @@ app.use("/api/v1/offerr",require("./routes/offerRoute"))
 app.use("/api/v1/productt",require("./routes/productRoute"))
 app.use("/api/v1/coupenn",require("./routes/coupencode"))
 app.use("/api/v1/cartAndOrder",require("./routes/cart&order.route"))
+app.use("/api/v1/jobportall",require("./routes/job.route"))
 
 mongoose.Promise = global.Promise;
 mongoose.set("strictQuery", true);

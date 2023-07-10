@@ -20,7 +20,7 @@ const BannerSchema = mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["domestic repair service","home maintenance service","commercial repair service","mechanic repair service","educational service","other service"],
+    enum: ["domestic repair service","home maintenance service","commercial repair service","mechanic repair service","educational service","other service",],
     default:"domestic repair service"
   },
 });

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const productController = require("../controllers/productsController")
+const jobController = require("../controllers/job.controller")
 const { verifyToken } = require("../middlewares/authJwt");
 
 const { authJwt, authorizeRoles } = require("../middlewares");
@@ -14,23 +14,22 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({ storage: storage });
 
-// Create a new product
-router.post("/", verifyToken,productController.createProduct);
+
+router.post("/", jobController.createJob);
 
 
-router.get("/", productController.getAllProduct);
+router.get("/", jobController.getallJobs);
 
-// Get a product by ID
-router.get("/:id", productController.getProductById);
 
-// Update a product
-router.put("/:id", productController.updateProduct);
+router.get("/:id", jobController.getJobsById);
 
-router.put("/updateProductImages/:id",upload.array('image'), productController.updateProductImages);
 
-router.put("/addProductReview/:id", productController.addProductReview);
+router.put("/:id", jobController.updateJobsById);
 
-// Delete a product
-router.delete("/:id", productController.deleteProduct);
+
+router.put("/images/:id", upload.array('image'),jobController.updateImage);
+
+
+router.delete("/:id", jobController.deleteJobsById);
 
 module.exports = router;
