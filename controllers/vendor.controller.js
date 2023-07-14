@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authConfig = require("../configs/auth.config");
 var newOTP = require("otp-generators");
-const User = require("../models/user.model");
+const User = require("../models/user.model")
 
 exports.registrationVendor = async (req, res) => {
   try {
@@ -46,6 +46,7 @@ exports.registrationVendor = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 exports.loginWithPhoneVendor = async (req, res) => {
   try {
@@ -205,6 +206,7 @@ exports.updateLocationVendor = async (req, res) => {
   }
 };
 
+
 exports.deleteUserById = async (req, res) => {
   try {
     const findUser = await User.findById({ _id: req.params.id });
@@ -219,6 +221,7 @@ exports.deleteUserById = async (req, res) => {
     return res.status(400).send({ message: err.message });
   }
 };
+
 
 exports.updateFileAndDocumentVendor = async (req, res) => {
   try {

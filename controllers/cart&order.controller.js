@@ -154,6 +154,29 @@ exports.addToCart = async (req, res) => {
   }
 };
 
+// API endpoint to remove a product from the cart
+
+exports.deletesingleProductAndService = async (req, res) => {
+  try {
+    let cart = [];
+    const productId = req.params.productId;
+
+    // Find the index of the product in the cart
+    const index = cart.findIndex((item) => item.id === productId);
+
+    if (index !== -1) {
+      // Remove the product from the cart
+      cart.splice(index, 1)
+      res.status(200).json({ message: "Product removed from cart." });
+    } else {
+      res.status(404).json({ message: "Product not found in cart." });
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error("An error occurred");
+  }
+};
+
 exports.emptyCart = async (req, res) => {
   try {
     console.log("hi");
@@ -782,6 +805,7 @@ exports.getOrderbyId = async (req, res, next) => {
     res.status(501).send({ status: 501, message: "server error.", data: {} });
   }
 };
+
 exports.allTransactionUser = async (req, res) => {
   try {
     const data = await transaction

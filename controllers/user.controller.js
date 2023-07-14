@@ -3,11 +3,11 @@ const jwt = require("jsonwebtoken");
 const authConfig = require("../configs/auth.config");
 var newOTP = require("otp-generators");
 const User = require("../models/user.model");
-
+const path = require("path");
 
 exports.registration = async (req, res) => {
   try {
-    var { phone, referalCode,referalCodeUnique } = req.body;
+    var { phone, referalCode, referalCodeUnique } = req.body;
     var user = await User.findOne({ phone: phone, userType: "USER" });
 
     if (!user) {
@@ -20,14 +20,13 @@ exports.registration = async (req, res) => {
       req.body.accountVerification = false;
       req.body.userType = "USER";
 
-
       let referalUser = null;
 
       const userCreate = await User.create({
         phone,
         referalCodeUnique,
-        ...req.body
-        });
+        ...req.body,
+      });
 
       if (referalCode) {
         referalUser = await User.findOne({ referalCode: referalCode });
@@ -38,8 +37,8 @@ exports.registration = async (req, res) => {
         }
       }
 
-      userCreate.referalBy = referalUser ? referalUser._id : null
-        await userCreate.save();
+      userCreate.referalBy = referalUser ? referalUser._id : null;
+      await userCreate.save();
 
       let obj = {
         id: userCreate._id,
@@ -50,7 +49,7 @@ exports.registration = async (req, res) => {
       res.status(200).send({
         status: 200,
         message: "Registered successfully ",
-        data: obj
+        data: obj,
       });
     } else {
       return res.status(409).send({ status: 409, msg: "Already Exit" });
@@ -236,6 +235,32 @@ exports.editProfile = async (req, res) => {
         .json({ msg: "profile details updated", user: user });
     } else {
       return res.status(404).json({ msg: "user not found", user: {} });
+    }
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send({ status: 500, message: "Server error" + error.message });
+  }
+};
+
+exports.uploadSelfie = async (req, res) => {
+  try {
+    const findUser = await User.findById({ _id: req.params.id });
+    if (findUser) {
+      let fileUrl;
+      if (req.file) {
+        fileUrl = req.file ? req.file.path : "";
+      }
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        { $set: { uploadSelfie: fileUrl || findUser.uploadSelfie } },
+        { new: true }
+      );
+      console.log(user);
+      return res
+        .status(200)
+        .json({ msg: "profile updated successfully", user: user });
     }
   } catch (error) {
     console.error(error);
